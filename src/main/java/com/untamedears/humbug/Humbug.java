@@ -1428,6 +1428,9 @@ public class Humbug extends JavaPlugin implements Listener {
 	  if(!config_.get("drop_ores_as_ore").getBool()) {
 		  return;
 	  }
+	  if (e.getBlock().getDrops(e.getPlayer().getInventory().getItemInMainHand()).size() == 0) {
+	      return;
+	  }
 	  if (isOre(e.getBlock().getType())) {
 		  e.setCancelled(true);
 		  Block b = e.getBlock();
