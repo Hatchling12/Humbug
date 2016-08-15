@@ -85,6 +85,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.SheepDyeWoolEvent;
+import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
@@ -2010,6 +2011,26 @@ public class Humbug extends JavaPlugin implements Listener {
     if(!config_.get("prevent_ender_pearl_save").getBool())
       return;
     event.setCancelled(true);
+  }
+  
+  @BahHumbug(opt="destroy_spawner", def="false")
+  @EventHandler
+  public void spawnerSpawn(SpawnerSpawnEvent e) {
+	  if(!config_.get("destroy_spawner").getBool()) {
+	      return;
+	  }
+	  e.setCancelled(true);
+	  Block b = e.getSpawner().getBlock();
+	  b.setType(Material.AIR);
+	  StringBuilder sb = new StringBuilder();
+	  for(Entity entity : b.getWorld().getNearbyEntities(b.getLocation(), 20.0, 20.0, 20.0)) {
+		  if (entity.getType() == EntityType.PLAYER) {
+			  sb.append(entity.getName());
+			  sb.append(" ");
+			  entity.sendMessage(ChatColor.RED + "Abusing spawners that shouldn't exist is no bueno. This incident was logged");
+		  }
+	  }
+	  info("Removed spawner at " + b.getLocation() + ". Nearby players were: " + sb.toString());
   }
 
   @BahHumbug(opt="fix_vehicle_logout_bug", def="true")
