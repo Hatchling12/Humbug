@@ -1549,7 +1549,7 @@ public class Humbug extends JavaPlugin implements Listener {
     if(!event.getBlock().getType().equals(Material.STATIONARY_LAVA)) {
       return;
     }
-    if(!event.getToBlock().getType().equals(Material.TRIPWIRE)) {
+    if(!(event.getToBlock().getType().equals(Material.TRIPWIRE) || event.getToBlock().getType().equals(Material.REDSTONE_WIRE))) {
       return;
     }
     Block string = event.getToBlock();
